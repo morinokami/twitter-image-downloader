@@ -16,7 +16,7 @@ class Downloader:
         self.last_tweet = None
         self.count = 0
 
-    def download_images(self, user, save_dest):
+    def download_images(self, user, save_dest, size):
         '''Download and save images that user uploaded.
 
         Args:
@@ -33,7 +33,7 @@ class Downloader:
 
                 # save the image
                 image = self.extract_image(tweet)
-                self.save_image(image, save_dest, fname)
+                self.save_image(image, save_dest, fname, size)
                 self.last_tweet = tweet['id']
             tweets = self.get_tweets(user, self.last_tweet)
 
@@ -107,7 +107,7 @@ class Downloader:
         else:
             return None
 
-    def save_image(self, image, path, timestamp):
+    def save_image(self, image, path, timestamp, size):
         '''Download and save an image to path.
 
         Args:
@@ -125,7 +125,7 @@ class Downloader:
             save_dest = os.path.join(path, timestamp + ext)
 
             # save the image in the specified directory
-            r = requests.get(image + ':large', stream=True)
+            r = requests.get(image + ':' + size, stream=True)
             if r.status_code == 200:
                 with open(save_dest, 'wb') as f:
                     r.raw.decode_content = True
@@ -137,9 +137,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Download all images uploaded by a twitter user you specify")
     parser.add_argument('user_id', help='an ID of a twitter user')
     parser.add_argument('dest', help='specify where to put images')
-    parser.add_argument('-k', '--key', help='api key')
-    parser.add_argument('-s', '--secret', help='api secret')
     parser.add_argument('-c', '--confidentials', help='a json file containing a key and a secret')
+    parser.add_argument('-s', '--size',  help='specify the size of images', default='large', choices=['large', 'medium', 'small', 'thumb'])
     args = parser.parse_args()
 
     if args.confidentials:
@@ -147,11 +146,8 @@ if __name__ == '__main__':
             confidentials = json.loads(f.read())
         api_key = confidentials['api_key']
         api_secret = confidentials['api_secret']
-    elif args.key and args.secret:
-        api_key = args.key
-        api_secret = args.secret
     else:
         sys.exit()
 
     downloader = Downloader(api_key, api_secret)
-    downloader.download_images(args.user_id, args.dest)
+    downloader.download_images(args.user_id, args.dest, args.size)
