@@ -17,6 +17,13 @@ class Downloader:
         self.count = 0
 
     def download_images(self, user, save_dest):
+        '''Download and save images that user uploaded.
+
+        Args:
+            user: User ID.
+            save_dest: The directory where images will be saved.
+        '''
+
         tweets = self.get_tweets(user, self.last_tweet)
         while len(tweets) > 0:
             for tweet in tweets:
@@ -31,6 +38,13 @@ class Downloader:
             tweets = self.get_tweets(user, self.last_tweet)
 
     def bearer(self, key, secret):
+        '''Receive the bearer token and return it.
+
+        Args:
+            key: API key.
+            secret: API string.
+        '''
+
         # setup
         credential = base64.b64encode(bytes('{}:{}'.format(api_key, api_secret), 'utf-8')).decode()
         url = 'https://api.twitter.com/oauth2/token'
@@ -50,6 +64,13 @@ class Downloader:
             return None
 
     def get_tweets(self, user, start):
+        '''Download user's tweets and return them as a list.
+
+        Args:
+            user: User ID.
+            start: Tweet ID.
+        '''
+
         # setup
         bearer_token = self.bearer_token
         url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
@@ -75,12 +96,27 @@ class Downloader:
             return []
 
     def extract_image(self, tweet):
+        '''Return the url of the image embedded in tweet.
+
+        Args:
+            tweet: A dict object representing a tweet.
+        '''
+
         if 'media' in tweet['entities']:
             return tweet['entities']['media'][0]['media_url']
         else:
             return None
 
     def save_image(self, image, path, timestamp):
+        '''Download and save an image to path.
+
+        Args:
+            image: The url of the image.
+            path: The directory where the image will be saved.
+            timestamp: The time that the image was uploaded.
+                It is used for naming the image.
+        '''
+
         if image:
             print('Saving ' + image)
 
