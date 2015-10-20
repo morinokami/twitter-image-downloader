@@ -16,7 +16,7 @@ class Downloader:
         self.last_tweet = None
         self.count = 0
 
-    def download_images(self, user, save_dest, size):
+    def download_images(self, user, save_dest, size, rts):
         '''Download and save images that user uploaded.
 
         Args:
@@ -24,7 +24,7 @@ class Downloader:
             save_dest: The directory where images will be saved.
         '''
 
-        tweets = self.get_tweets(user, self.last_tweet)
+        tweets = self.get_tweets(user, self.last_tweet, rts)
         while len(tweets) > 0:
             for tweet in tweets:
                 # create a file name using the timestamp of the image
@@ -63,7 +63,7 @@ class Downloader:
         else:
             return None
 
-    def get_tweets(self, user, start):
+    def get_tweets(self, user, start, rts):
         '''Download user's tweets and return them as a list.
 
         Args:
@@ -77,7 +77,7 @@ class Downloader:
         headers = {
             'Authorization': 'Bearer {}'.format(bearer_token)
         }
-        payload = {'screen_name': user, 'count': 200, 'include_rts': False}
+        payload = {'screen_name': user, 'count': 200, 'include_rts': rts}
         if start:
             payload['max_id'] = start
 
@@ -139,6 +139,7 @@ if __name__ == '__main__':
     parser.add_argument('dest', help='specify where to put images')
     parser.add_argument('-c', '--confidentials', help='a json file containing a key and a secret')
     parser.add_argument('-s', '--size',  help='specify the size of images', default='large', choices=['large', 'medium', 'small', 'thumb'])
+    parser.add_argument('--rts', help='save images contained in retweets', action="store_true")
     args = parser.parse_args()
 
     if args.confidentials:
@@ -150,4 +151,4 @@ if __name__ == '__main__':
         sys.exit()
 
     downloader = Downloader(api_key, api_secret)
-    downloader.download_images(args.user_id, args.dest, args.size)
+    downloader.download_images(args.user_id, args.dest, args.size, args.rts)
