@@ -1,6 +1,8 @@
 import os
+import shutil
+import time
 
-from nose.tools import with_setup, eq_, raises
+from nose.tools import with_setup, eq_, raises, assert_true
 
 from twt_img import Downloader
 from exceptions import *
@@ -59,3 +61,12 @@ def test_image_properly_extracted():
 def test_should_fail_if_no_images():
     dummy_tweet = {'entities': []}
     eq_(downloader.extract_image(dummy_tweet), None)
+
+
+def test_save_image():
+    os.mkdir('temp')
+    now = str(int(time.time()))
+    downloader.save_image('http://pbs.twimg.com/media/CRd-x43VAAAV9k2.png', 'temp', now)
+    image = os.listdir('temp')
+    shutil.rmtree('temp')
+    assert_true(len(image) > 0)

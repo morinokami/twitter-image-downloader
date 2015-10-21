@@ -1,6 +1,9 @@
 language: python
 python:
+  - "3.2"
+  - "3.3"
   - "3.4"
+  - "3.5"
 env:
   global:
   - secure: "SDTHNohoPqakqSNphTHvscpa+58IR15XVLpeg9/C8eQE9wFCEe6yjNq7vC0De5aFsDIxa5EHdjWJK0VIHXl4vUg6R8HaAl1bdRxYfHPCN4FxLW2Og88ekGsmHuGzh9h/P/3y7xidoh5PBP8O8srqs0uzYfOi+2Je/CjcHsE/zWhnWz5NUGUZscSPSjO0lo2lOaf2s1W7VegWVVR2gABx1Lb+Kzrbi+rvJl/qkuO8wXQykXxXGN2EimUfRvcUciLKrFtwwXXPNe4ReiW3mYxLPl0RyKBxsWz30+mYUM6SuZWVigU8ESQzRmB0ae5ubL4qMjk2fDHt8azWm2XtAHWU+ts6IVpM4XuvlEv9aX9c9dq9hZkLHlxlCQx8jhnmgXeaXM58iZINhUfhtwhbC20TTVURDZVffGi9wEhqhnZtRumVSXvQF9yrSqBO6MfGsQ/0/Ll+edg5pabnr/wlz1SIe904GOd6yPvMMJMEnyEz4K/s+9AkPwM7WimLyBqtCIizTy033F6UD01cIIfXwZ5b/ueRM0l8Vk6iNEsyE2eZGjn9e9xjWWAQVn9U9HpPKWIDiJCGkEQy6N33ue9uiRWhrEAUDf7WEiG0VBEpl4k+18i/mYak/RDo2y7EERwgsfZeiJyiY6N0vwOViDClCooxltw/qiqWp1jswUMtIzz7KDs="
