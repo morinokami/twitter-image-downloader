@@ -10,5 +10,5 @@ class BearerTokenNotFetchedError(Error):
     '''Couldn't fetch the bearer token.'''
 
 
-class InvalidDonwloadPathError(Error):
+class InvalidDownloadPathError(Error):
     '''Download path must be a directory.'''

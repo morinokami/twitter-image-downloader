@@ -27,7 +27,7 @@ class Downloader:
         '''
 
         if not os.path.isdir(save_dest):
-            raise InvalidDonwloadPathError()
+            raise InvalidDownloadPathError()
 
         tweets = self.get_tweets(user, self.last_tweet, rts)
         while len(tweets) > 0:
