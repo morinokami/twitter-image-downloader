@@ -53,7 +53,7 @@ class Downloader:
         '''
 
         # setup
-        credential = base64.b64encode(bytes('{}:{}'.format(api_key, api_secret), 'utf-8')).decode()
+        credential = base64.b64encode(bytes('{}:{}'.format(key, secret), 'utf-8')).decode()
         url = 'https://api.twitter.com/oauth2/token'
         headers = {
             'Authorization': 'Basic {}'.format(credential),
