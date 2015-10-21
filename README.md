@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/morinokami/twitter-image-downloader.svg?branch=master)](https://travis-ci.org/morinokami/twitter-image-downloader)
+
 ### About
 With this program, you can download all images uploaded by a specific twitter user.
 
