@@ -8,6 +8,8 @@ import sys
 import dateutil.parser
 import requests
 
+from exceptions import *
+
 
 class Downloader:
 
@@ -23,6 +25,9 @@ class Downloader:
             user: User ID.
             save_dest: The directory where images will be saved.
         '''
+
+        if not os.path.isdir(save_dest):
+            raise InvalidDonwloadPathError()
 
         tweets = self.get_tweets(user, self.last_tweet, rts)
         while len(tweets) > 0:
@@ -61,9 +66,9 @@ class Downloader:
         if r.status_code == 200:
             return r.json()['access_token']
         else:
-            return None
+            raise BearerTokenNotFetchedError()
 
-    def get_tweets(self, user, start, rts):
+    def get_tweets(self, user, start=None, rts=False):
         '''Download user's tweets and return them as a list.
 
         Args:
@@ -145,6 +150,8 @@ if __name__ == '__main__':
     if args.confidentials:
         with open(args.confidentials) as f:
             confidentials = json.loads(f.read())
+        if 'api_key' not in confidentials or 'api_secret' not in confidentials:
+            raise ConfidentialsNotSuppliedError()
         api_key = confidentials['api_key']
         api_secret = confidentials['api_secret']
     else:
