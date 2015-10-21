@@ -155,7 +155,7 @@ if __name__ == '__main__':
         api_key = confidentials['api_key']
         api_secret = confidentials['api_secret']
     else:
-        sys.exit()
+        raise ConfidentialsNotSuppliedError()
 
     downloader = Downloader(api_key, api_secret)
     downloader.download_images(args.user_id, args.dest, args.size, args.rts)
