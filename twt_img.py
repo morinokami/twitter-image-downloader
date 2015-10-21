@@ -18,7 +18,7 @@ class Downloader:
         self.last_tweet = None
         self.count = 0
 
-    def download_images(self, user, save_dest, size, rts):
+    def download_images(self, user, save_dest, size='large', rts=False):
         '''Download and save images that user uploaded.
 
         Args:
@@ -115,7 +115,7 @@ class Downloader:
         else:
             return None
 
-    def save_image(self, image, path, timestamp, size):
+    def save_image(self, image, path, timestamp, size='large'):
         '''Download and save an image to path.
 
         Args:
