@@ -24,6 +24,8 @@ class Downloader:
         Args:
             user: User ID.
             save_dest: The directory where images will be saved.
+            size: Which size of images to download.
+            rts: Whether to include retweets or not.
         '''
 
         if not os.path.isdir(save_dest):
@@ -74,6 +76,7 @@ class Downloader:
         Args:
             user: User ID.
             start: Tweet ID.
+            rts: Whether to include retweets or not.
         '''
 
         # setup
@@ -120,6 +123,7 @@ class Downloader:
             path: The directory where the image will be saved.
             timestamp: The time that the image was uploaded.
                 It is used for naming the image.
+            size: Which size of images to download.
         '''
 
         if image:
