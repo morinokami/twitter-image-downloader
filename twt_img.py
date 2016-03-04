@@ -156,7 +156,7 @@ if __name__ == '__main__':
     parser.add_argument('user_id', help='an ID of a twitter user')
     parser.add_argument('dest', help='specify where to put images')
     parser.add_argument('-c', '--confidentials', help='a json file containing a key and a secret')
-    parser.add_argument('-s', '--size',  help='specify the size of images', default='large', choices=['large', 'medium', 'small', 'thumb'])
+    parser.add_argument('-s', '--size',  help='specify the size of images', default='large', choices=['large', 'medium', 'small', 'thumb', 'orig'])
     parser.add_argument('--rts', help='save images contained in retweets', action="store_true")
     args = parser.parse_args()
 
