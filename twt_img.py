@@ -15,6 +15,7 @@ class Downloader:
 
     def __init__(self, api_key, api_secret):
         self.bearer_token = self.bearer(api_key, api_secret)
+        #print ('Bearer token is ' + self.bearer_token)
         self.last_tweet = None
         self.count = 0
 
@@ -32,6 +33,9 @@ class Downloader:
             raise InvalidDownloadPathError()
 
         tweets = self.get_tweets(user, self.last_tweet, rts)
+        if not tweets:
+            print ("Got an empty list of tweets")
+
         while len(tweets) > 0:
             for tweet in tweets:
                 # create a file name using the timestamp of the image
@@ -101,6 +105,7 @@ class Downloader:
                 print('Got ' + str(len(tweets)) + ' tweets')
                 return tweets if not start else tweets[1:]
         else:
+            print ('An error occurred with the request, status code was ' + str(r.status_code))
             return []
 
     def extract_image(self, tweet):
