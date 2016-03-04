@@ -127,19 +127,23 @@ class Downloader:
         '''
 
         if image:
-            print('Saving ' + image)
-
             # image's path with a new name
             ext = os.path.splitext(image)[1]
             save_dest = os.path.join(path, timestamp + ext)
 
-            # save the image in the specified directory
-            r = requests.get(image + ':' + size, stream=True)
-            if r.status_code == 200:
-                with open(save_dest, 'wb') as f:
-                    r.raw.decode_content = True
-                    shutil.copyfileobj(r.raw, f)
-                self.count += 1
+            # save the image in the specified directory (or don't)
+            if not (os.path.exists(save_dest)):
+                print('Saving ' + image)
+
+                r = requests.get(image + ':' + size, stream=True)
+                if r.status_code == 200:
+                    with open(save_dest, 'wb') as f:
+                        r.raw.decode_content = True
+                        shutil.copyfileobj(r.raw, f)
+                    self.count += 1
+
+            else:
+                print('Skipping ' + image + ' because it was already dowloaded')
 
 
 if __name__ == '__main__':
