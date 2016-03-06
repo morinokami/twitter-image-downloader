@@ -25,4 +25,6 @@ where ```dest_path``` is the directory where images will be downloaded, and ```c
 
 You can specify which size of images to download using the optional argument ```-s``` (or ```--size```). There are four values you can use for it: ```large```, ```medium```, ```small```, or ```thumb```. If you don't specify this value, images of large size will be downloaded by default.
 
+Provide a number to the ```-l``` or ```--limit``` argument (e.g. ```-l 25```) to limit how many tweets are checked for images (starting with the most recent).  Note that if you're using ```--limit``` but not ```--rts```, tweets may be checked in batches smaller than this limit.
+
 Using the ```--rts``` flag, you can also download images contained in retweets.

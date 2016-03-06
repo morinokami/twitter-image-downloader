@@ -19,7 +19,7 @@ class Downloader:
         self.last_tweet = None
         self.count = 0
 
-    def download_images(self, user, save_dest, size='large', rts=False):
+    def download_images(self, user, save_dest, size='large', limit=3200, rts=False):
         '''Download and save images that user uploaded.
 
         Args:
@@ -32,11 +32,12 @@ class Downloader:
         if not os.path.isdir(save_dest):
             raise InvalidDownloadPathError()
 
-        tweets = self.get_tweets(user, self.last_tweet, rts)
+        num_tweets_checked = 0
+        tweets = self.get_tweets(user, self.last_tweet, limit, rts)
         if not tweets:
             print ("Got an empty list of tweets")
 
-        while len(tweets) > 0:
+        while len(tweets) > 0 and num_tweets_checked < limit:
             for tweet in tweets:
                 # create a file name using the timestamp of the image
                 timestamp = dateutil.parser.parse(tweet['created_at']).timestamp()
@@ -45,8 +46,10 @@ class Downloader:
                 # save the image
                 image = self.extract_image(tweet)
                 self.save_image(image, save_dest, fname, size)
+                num_tweets_checked += 1
                 self.last_tweet = tweet['id']
-            tweets = self.get_tweets(user, self.last_tweet)
+
+            tweets = self.get_tweets(user, self.last_tweet, count=limit)
 
     def bearer(self, key, secret):
         '''Receive the bearer token and return it.
@@ -74,7 +77,7 @@ class Downloader:
         else:
             raise BearerTokenNotFetchedError()
 
-    def get_tweets(self, user, start=None, rts=False):
+    def get_tweets(self, user, start=None, count=200, rts=False):
         '''Download user's tweets and return them as a list.
 
         Args:
@@ -89,7 +92,7 @@ class Downloader:
         headers = {
             'Authorization': 'Bearer {}'.format(bearer_token)
         }
-        payload = {'screen_name': user, 'count': 200, 'include_rts': rts}
+        payload = {'screen_name': user, 'count': count, 'include_rts': rts}
         if start:
             payload['max_id'] = start
 
@@ -132,6 +135,7 @@ class Downloader:
         '''
 
         if image:
+
             # image's path with a new name
             ext = os.path.splitext(image)[1]
             save_dest = os.path.join(path, timestamp + ext)
@@ -157,6 +161,7 @@ if __name__ == '__main__':
     parser.add_argument('dest', help='specify where to put images')
     parser.add_argument('-c', '--confidentials', help='a json file containing a key and a secret')
     parser.add_argument('-s', '--size',  help='specify the size of images', default='large', choices=['large', 'medium', 'small', 'thumb', 'orig'])
+    parser.add_argument('-l', '--limit', type=int, help='the maximum number of tweets to check (most recent first)', default=3200)
     parser.add_argument('--rts', help='save images contained in retweets', action="store_true")
     args = parser.parse_args()
 
@@ -171,4 +176,4 @@ if __name__ == '__main__':
         raise ConfidentialsNotSuppliedError()
 
     downloader = Downloader(api_key, api_secret)
-    downloader.download_images(args.user_id, args.dest, args.size, args.rts)
+    downloader.download_images(args.user_id, args.dest, args.size, args.limit, args.rts)
