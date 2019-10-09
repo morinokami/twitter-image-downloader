@@ -6,6 +6,7 @@ import shutil
 import sys
 
 import dateutil.parser
+from datetime import datetime
 import requests
 
 from exceptions import *
@@ -41,11 +42,20 @@ class Downloader:
             for tweet in tweets:
                 # create a file name using the timestamp of the image
                 timestamp = dateutil.parser.parse(tweet['created_at']).timestamp()
-                fname = str(int(timestamp))
+                timestamp = int(timestamp)
+                value = datetime.fromtimestamp(timestamp)
+                fname = value.strftime('%Y-%m-%d-%H-%M-%S')
 
                 # save the image
-                image = self.extract_image(tweet)
-                self.save_image(image, save_dest, fname, size)
+                images = self.extract_image(tweet)
+                if images is not None:
+                    counter = 0
+                    for image in images:
+                        if counter == 0:
+                            self.save_image(image, save_dest, fname, size)
+                        else:
+                            self.save_image(image, save_dest, fname+'_'+str(counter), size)
+                        counter+=1
                 num_tweets_checked += 1
                 self.last_tweet = tweet['id']
 
@@ -92,7 +102,7 @@ class Downloader:
         headers = {
             'Authorization': 'Bearer {}'.format(bearer_token)
         }
-        payload = {'screen_name': user, 'count': count, 'include_rts': rts}
+        payload = {'screen_name': user, 'count': count, 'include_rts': rts, 'tweet_mode': 'extended'}
         if start:
             payload['max_id'] = start
 
@@ -119,7 +129,11 @@ class Downloader:
         '''
 
         if 'media' in tweet['entities']:
-            return tweet['entities']['media'][0]['media_url']
+            urls = [x['media_url'] for x in tweet['entities']['media']]
+            if 'extended_entities' in tweet:
+                extra = [x['media_url'] for x in tweet['extended_entities']['media']]
+                urls = set(urls+extra)
+            return urls
         else:
             return None
 
