@@ -1,8 +1,7 @@
 import os
-import shutil
 import time
 
-from nose.tools import with_setup, eq_, raises, assert_true
+import pytest
 
 from twt_img import Downloader
 from exceptions import *
@@ -44,29 +43,27 @@ tweet = {
 }
 
 
-@raises(BearerTokenNotFetchedError)
 def test_invalid_confidentials_should_fail():
-    invalid_downloader = Downloader('my api key', 'my api secret')
+    with pytest.raises(BearerTokenNotFetchedError):
+        invalid_downloader = Downloader('my api key', 'my api secret')
 
 
 def test_get_tweets():
     tweets = downloader.get_tweets('BarackObama', rts=True)
-    eq_(len(tweets), 200)
+    assert len(tweets) ==  200
 
 
 def test_image_properly_extracted():
-    eq_(downloader.extract_image(tweet), "http://pbs.twimg.com/media/foo.jpg")
+    assert downloader.extract_image(tweet)[0] == "http://pbs.twimg.com/media/foo.jpg"
 
 
 def test_should_fail_if_no_images():
     dummy_tweet = {'entities': []}
-    eq_(downloader.extract_image(dummy_tweet), None)
+    assert downloader.extract_image(dummy_tweet) == None
 
 
-def test_save_image():
-    os.mkdir('temp')
+def test_save_image(tmpdir):
     now = str(int(time.time()))
-    downloader.save_image('http://pbs.twimg.com/media/CRd-x43VAAAV9k2.png', 'temp', now)
-    image = os.listdir('temp')
-    shutil.rmtree('temp')
-    assert_true(len(image) > 0)
+    downloader.save_image('http://pbs.twimg.com/media/CRd-x43VAAAV9k2.png', tmpdir, now)
+    image = os.listdir(tmpdir)
+    assert len(image) > 0

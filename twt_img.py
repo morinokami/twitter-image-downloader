@@ -122,7 +122,7 @@ class Downloader:
             return []
 
     def extract_image(self, tweet):
-        '''Return the url of the image embedded in tweet.
+        '''Return a list of url(s) which represents the image(s) embedded in tweet.
 
         Args:
             tweet: A dict object representing a tweet.
