@@ -1,5 +1,4 @@
 import os
-import shutil
 import time
 
 import pytest
@@ -63,10 +62,8 @@ def test_should_fail_if_no_images():
     assert downloader.extract_image(dummy_tweet) == None
 
 
-def test_save_image():
-    os.mkdir('temp')
+def test_save_image(tmpdir):
     now = str(int(time.time()))
-    downloader.save_image('http://pbs.twimg.com/media/CRd-x43VAAAV9k2.png', 'temp', now)
-    image = os.listdir('temp')
-    shutil.rmtree('temp')
+    downloader.save_image('http://pbs.twimg.com/media/CRd-x43VAAAV9k2.png', tmpdir, now)
+    image = os.listdir(tmpdir)
     assert len(image) > 0
