@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/morinokami/twitter-image-downloader.svg?style=svg)](https://circleci.com/gh/morinokami/twitter-image-downloader)
 
 
-## About
+## What it does
 With this program, you can download all images uploaded by a specific twitter
 user.
 
@@ -11,10 +11,10 @@ user.
 
 
 ## Setup
-First, you need to install `twt_img`:
+First, you need to install `twitter-image-dl`:
 
 ```
-$ pip install twt_img
+$ pip install twitter-image-dl
 ```
 
 Next, you need to generate your api key and api secret key.

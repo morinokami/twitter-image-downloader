@@ -4,7 +4,7 @@ with open("README.md") as f:
     desc = f.read()
 
 setuptools.setup(
-    name="twt_img",
+    name="twitter-image-dl",
     version="0.1.0",
     license="MIT",
     url="https://github.com/morinokami/twitter-image-downloader",
@@ -21,6 +21,7 @@ setuptools.setup(
     ],
     description="Twitter image downloader",
     long_description=desc,
+    long_description_content_type="text/markdown",
     author="Shinya Fujino",
     author_email="shf0811@gmail.com",
     packages=["twt_img"],
