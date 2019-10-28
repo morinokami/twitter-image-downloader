@@ -3,12 +3,12 @@ import time
 
 import pytest
 
-from twt_img import Downloader
-import exceptions as e
+from twt_img import twt_img
+from twt_img import exceptions as e
 
 api_key = os.environ["KEY"]
 api_secret = os.environ["SECRET"]
-downloader = Downloader(api_key, api_secret)
+downloader = twt_img.Downloader(api_key, api_secret)
 tweet = {
     "entities": {
         "media": [
@@ -29,7 +29,7 @@ tweet = {
 
 def test_invalid_confidentials_should_fail():
     with pytest.raises(e.BearerTokenNotFetchedError):
-        _ = Downloader("my api key", "my api secret")
+        _ = twt_img.Downloader("my api key", "my api secret")
 
 
 def test_get_tweets():

@@ -8,7 +8,7 @@ import dateutil.parser
 from datetime import datetime
 import requests
 
-import exceptions as e
+from . import exceptions as e
 
 
 class Downloader:
@@ -176,7 +176,7 @@ class Downloader:
                 print("Skipping " + image + " because it was already dowloaded")
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Download all images uploaded by a twitter user you specify"
     )
