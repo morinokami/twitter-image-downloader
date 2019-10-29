@@ -60,6 +60,8 @@ class Downloader:
 
             tweets = self.get_tweets(user, self.last_tweet, count=limit)
 
+        print("\nDone: {} images downloaded".format(self.count))
+
     def bearer(self, key, secret):
         """Receive the bearer token and return it.
 
@@ -119,7 +121,6 @@ class Downloader:
             if len(tweets) == 1:
                 return []
             else:
-                print("Got " + str(len(tweets)) + " tweets")
                 return tweets if not start else tweets[1:]
         else:
             print(
@@ -156,15 +157,20 @@ class Downloader:
             size: Which size of images to download.
         """
 
-        if image:
+        def print_status(s):
+            import sys
 
+            sys.stdout.write(u"\u001b[1K")
+            print("\r{} {}".format(["-", "\\", "|", "/"][self.count % 4], s), end="")
+
+        if image:
             # image's path with a new name
             ext = os.path.splitext(image)[1]
-            save_dest = os.path.join(path, timestamp + ext)
+            name = timestamp + ext
+            save_dest = os.path.join(path, name)
 
             # save the image in the specified directory if
             if not (os.path.exists(save_dest)):
-                print("Saving {}".format(image))
 
                 r = requests.get(image + ":" + size, stream=True)
                 if r.status_code == 200:
@@ -172,9 +178,10 @@ class Downloader:
                         r.raw.decode_content = True
                         shutil.copyfileobj(r.raw, f)
                     self.count += 1
+                    print_status("{} saved".format(name))
 
             else:
-                print("Skipping {}: already dowloaded".format(image))
+                print_status("Skipping {}: already downloaded".format(name))
 
 
 def main():
