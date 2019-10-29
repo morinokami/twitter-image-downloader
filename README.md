@@ -2,8 +2,7 @@
 
 
 ## What it does
-With this program, you can download all images uploaded by a specific twitter
-user.
+Download all images uploaded by a specified Twitter user.
 
 
 ## What you need
@@ -38,8 +37,12 @@ like the following on the command line:
 $ twt_img foo dest_path -c confidentials.json
 ```
 
-where `dest_path` is the directory where images will be downloaded, and
-`confidentials.json` is a json file containing your api key and api secret.
+where `confidentials.json` is the json file containing your api keys.
+This command creates a directory called `foo` and save images to that
+directory.
+
+If you want to save images to a directory other than `foo`, use `-d` or
+`--dest` argument to specify the destination.
 
 You can specify which size of images to download using the optional argument
 `-s` (or `--size`). There are five values you can specify:
