@@ -65,6 +65,8 @@ be smaller than the specified limit.
 Install dependencies for testing and enter `pytest` command like this:
 
 ```
+$ gi clone git@github.com:morinokami/twitter-image-downloader.git
+$ cd twitter-image-downloader
 $ pipenv install --dev
 $ pipenv run test
 ```
