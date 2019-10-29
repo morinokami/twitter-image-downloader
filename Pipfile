@@ -23,3 +23,9 @@ python_version = "3.7"
 
 [pipenv]
 allow_prereleases = true
+
+[scripts]
+install = "pip install -e ."
+test = "pytest"
+build = "python setup.py sdist bdist_wheel"
+deploy = "twine upload dist/*"

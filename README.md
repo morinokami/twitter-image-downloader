@@ -66,7 +66,7 @@ Install dependencies for testing and enter `pytest` command like this:
 
 ```
 $ pipenv install --dev
-$ pytest
+$ pipenv run test
 ```
 
 Notice that you have to set `KEY` and `SECRET` environment variables for

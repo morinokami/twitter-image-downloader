@@ -28,7 +28,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            KEY=$API_KEY SECRET=$API_SECRET pipenv run make test
+            KEY=$API_KEY SECRET=$API_SECRET pipenv run test
 
       - store_artifacts:
           path: test-reports
