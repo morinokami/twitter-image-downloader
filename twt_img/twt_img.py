@@ -60,7 +60,7 @@ class Downloader:
 
             tweets = self.get_tweets(user, self.last_tweet, count=limit)
 
-        print("\nDone: {} images downloaded".format(self.count))
+        print(f"\nDone: {self.count} images downloaded")
 
     def bearer(self, key, secret):
         """Receive the bearer token and return it.
@@ -71,12 +71,10 @@ class Downloader:
         """
 
         # setup
-        credential = base64.b64encode(
-            bytes("{}:{}".format(key, secret), "utf-8")
-        ).decode()
+        credential = base64.b64encode(bytes(f"{key}:{secret}", "utf-8")).decode()
         url = "https://api.twitter.com/oauth2/token"
         headers = {
-            "Authorization": "Basic {}".format(credential),
+            "Authorization": f"Basic {credential}",
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         }
         payload = {"grant_type": "client_credentials"}
@@ -102,7 +100,7 @@ class Downloader:
         # setup
         bearer_token = self.bearer_token
         url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
-        headers = {"Authorization": "Bearer {}".format(bearer_token)}
+        headers = {"Authorization": f"Bearer {bearer_token}"}
         payload = {
             "screen_name": user,
             "count": count,
@@ -124,9 +122,7 @@ class Downloader:
                 return tweets if not start else tweets[1:]
         else:
             print(
-                "An error occurred with the request, the status code was {}".format(
-                    r.status_code
-                )
+                f"An error occurred with the request, the status code was {r.status_code}"
             )
             return []
 
@@ -160,8 +156,9 @@ class Downloader:
         def print_status(s):
             import sys
 
-            sys.stdout.write(u"\u001b[1K")
-            print("\r{} {}".format(["-", "\\", "|", "/"][self.count % 4], s), end="")
+            sys.stdout.write("\u001b[1K")
+            spinner = ["-", "\\", "|", "/"][self.count % 4]
+            print(f"\r{spinner} {s}", end="")
 
         if image:
             # image's path with a new name
@@ -178,10 +175,10 @@ class Downloader:
                         r.raw.decode_content = True
                         shutil.copyfileobj(r.raw, f)
                     self.count += 1
-                    print_status("{} saved".format(name))
+                    print_status(f"{name} saved")
 
             else:
-                print_status("Skipping {}: already downloaded".format(name))
+                print_status(f"Skipping {name}: already downloaded")
 
 
 def main():
