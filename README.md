@@ -6,7 +6,7 @@ Download all images uploaded by a specified Twitter user.
 
 ## What you need
 
-- Python 3
+- Python 3 (>= 3.7)
 
 ## Setup
 
