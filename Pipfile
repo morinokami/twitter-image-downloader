@@ -8,6 +8,7 @@ pytest = "*"
 flake8 = "*"
 black = "*"
 twine = "*"
+responses = "*"
 
 [packages]
 certifi = "==2019.9.11"

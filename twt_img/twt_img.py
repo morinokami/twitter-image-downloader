@@ -70,7 +70,7 @@ class Downloader:
         print(f"\nDone: {self.count} images downloaded")
 
     def bearer(self, key, secret):
-        """Receive the bearer token and return it.
+        """Download the bearer token and return it.
 
         Args:
             key: API key.
@@ -155,7 +155,7 @@ class Downloader:
             return None
 
     def save_image(self, image, path, timestamp, size="large"):
-        """Download and save an image to path.
+        """Download and save image to path.
 
         Args:
             image: The url of the image.

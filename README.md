@@ -65,7 +65,7 @@ be smaller than the specified limit.
 
 ## Testing
 
-Install dependencies for testing and enter `pytest` command like this:
+Install dependencies for testing and run tests like this:
 
 ```sh
 $ gi clone git@github.com:morinokami/twitter-image-downloader.git
