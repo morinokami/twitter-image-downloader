@@ -17,7 +17,9 @@ class Downloader:
         self.last_tweet = None
         self.count = 0
 
-    def download_images(self, user, save_dest, size="large", limit=3200, rts=False):
+    def download_images(
+        self, user, save_dest, size="large", limit=3200, rts=False
+    ):
         """Download and save images that user uploaded.
 
         Args:
@@ -38,7 +40,9 @@ class Downloader:
         while len(tweets) > 0 and num_tweets_checked < limit:
             for tweet in tweets:
                 # create a file name using the timestamp of the image
-                timestamp = dateutil.parser.parse(tweet["created_at"]).timestamp()
+                timestamp = dateutil.parser.parse(
+                    tweet["created_at"]
+                ).timestamp()
                 timestamp = int(timestamp)
                 value = datetime.fromtimestamp(timestamp)
                 fname = value.strftime("%Y-%m-%d-%H-%M-%S")
@@ -52,7 +56,10 @@ class Downloader:
                             self.save_image(image, save_dest, fname, size)
                         else:
                             self.save_image(
-                                image, save_dest, fname + "_" + str(counter), size
+                                image,
+                                save_dest,
+                                fname + "_" + str(counter),
+                                size,
                             )
                         counter += 1
                 num_tweets_checked += 1
@@ -60,10 +67,10 @@ class Downloader:
 
             tweets = self.get_tweets(user, self.last_tweet, count=limit)
 
-        print("\nDone: {} images downloaded".format(self.count))
+        print(f"\nDone: {self.count} images downloaded")
 
     def bearer(self, key, secret):
-        """Receive the bearer token and return it.
+        """Download the bearer token and return it.
 
         Args:
             key: API key.
@@ -72,11 +79,11 @@ class Downloader:
 
         # setup
         credential = base64.b64encode(
-            bytes("{}:{}".format(key, secret), "utf-8")
+            bytes(f"{key}:{secret}", "utf-8")
         ).decode()
         url = "https://api.twitter.com/oauth2/token"
         headers = {
-            "Authorization": "Basic {}".format(credential),
+            "Authorization": f"Basic {credential}",
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         }
         payload = {"grant_type": "client_credentials"}
@@ -102,7 +109,7 @@ class Downloader:
         # setup
         bearer_token = self.bearer_token
         url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
-        headers = {"Authorization": "Bearer {}".format(bearer_token)}
+        headers = {"Authorization": f"Bearer {bearer_token}"}
         payload = {
             "screen_name": user,
             "count": count,
@@ -124,9 +131,8 @@ class Downloader:
                 return tweets if not start else tweets[1:]
         else:
             print(
-                "An error occurred with the request, the status code was {}".format(
-                    r.status_code
-                )
+                "An error occurred with the request,"
+                + f"the status code was {r.status_code}"
             )
             return []
 
@@ -140,14 +146,16 @@ class Downloader:
         if "media" in tweet["entities"]:
             urls = [x["media_url"] for x in tweet["entities"]["media"]]
             if "extended_entities" in tweet:
-                extra = [x["media_url"] for x in tweet["extended_entities"]["media"]]
+                extra = [
+                    x["media_url"] for x in tweet["extended_entities"]["media"]
+                ]
                 urls = set(urls + extra)
             return urls
         else:
             return None
 
     def save_image(self, image, path, timestamp, size="large"):
-        """Download and save an image to path.
+        """Download and save image to path.
 
         Args:
             image: The url of the image.
@@ -160,8 +168,9 @@ class Downloader:
         def print_status(s):
             import sys
 
-            sys.stdout.write(u"\u001b[1K")
-            print("\r{} {}".format(["-", "\\", "|", "/"][self.count % 4], s), end="")
+            sys.stdout.write("\u001b[1K")
+            spinner = ["-", "\\", "|", "/"][self.count % 4]
+            print(f"\r{spinner} {s}", end="")
 
         if image:
             # image's path with a new name
@@ -178,10 +187,10 @@ class Downloader:
                         r.raw.decode_content = True
                         shutil.copyfileobj(r.raw, f)
                     self.count += 1
-                    print_status("{} saved".format(name))
+                    print_status(f"{name} saved")
 
             else:
-                print_status("Skipping {}: already downloaded".format(name))
+                print_status(f"Skipping {name}: already downloaded")
 
 
 def main():
