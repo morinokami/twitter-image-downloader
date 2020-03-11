@@ -73,6 +73,3 @@ $ cd twitter-image-downloader
 $ pipenv install --dev
 $ pipenv run test
 ```
-
-Notice that you have to set `KEY` and `SECRET` environment variables for
-testing to work.
