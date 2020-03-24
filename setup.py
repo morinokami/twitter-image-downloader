@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setuptools.setup(
     name="twitter-image-dl",
-    version="0.2.1",
+    version="0.2.2",
     license="MIT",
     url="https://github.com/morinokami/twitter-image-downloader",
     keywords=["Twitter", "image"],
